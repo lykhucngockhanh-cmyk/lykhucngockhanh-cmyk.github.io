@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiệm Bánh Ngọt - Thực Đơn & Đặt Hàng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Thiết lập biến và font chữ */
+        :root {
+            --primary-color: #ffb7c5; /* Màu hồng nhạt, ngọt ngào */
+            --secondary-color: #f7e1e6; /* Màu kem nhạt */
+            --accent-color: #c94c7b; /* Màu nhấn đậm hơn */
+            --text-color: #333;
+            --light-text-color: #fff;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Roboto', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+
+        /* --- Thanh Điều Hướng & Hero --- */
+
+        .main-header {
+            /* DÒNG NÀY ĐÃ ĐƯỢC THAY THẾ BẰNG ẢNH TIỆM BÁNH ĐẸP */
+            background: url(tiem-banh-kem-gan-day-8.jpg) no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--light-text-color);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .main-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.25); /* Tăng độ mờ nhẹ để chữ dễ đọc hơn */
+            z-index: 1;
+        }
+        
+        .navbar, .hero {
+            position: relative;
+            z-index: 2; 
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: var(--light-text-color);
+            text-decoration: none;
+            font-weight: 700;
+            padding-bottom: 5px;
+            transition: color 0.3s, border-bottom 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .hero {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 4em;
+            margin-bottom: 10px;
+            color: var(--light-text-color);
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 15px 30px;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            text-transform: uppercase;
+        }
+
+        .cta-button:hover {
+            background-color: var(--accent-color);
+            color: var(--light-text-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- Phần Sản Phẩm (Product Section) --- */
+
+        .product-section {
+            padding: 80px 20px;
+            text-align: center;
+            background-color: var(--secondary-color);
+        }
+
+        .product-section h2 {
+            font-family: var(--font-heading);
+            font-size: 2.8em;
+            margin-bottom: 50px;
+            color: var(--accent-color);
+        }
+
+        .product-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px 30px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        /* Hình ảnh sản phẩm (đã có từ trước) */
+        .cake-1 .product-image { background-image: url(thu-bien-tau-voi-cach-lam-tiramisu-cacao-nguyen-chat-nhe11606032035.jpg); }
+        .cake-2 .product-image { background-image: url(32-1200x676.jpg); }
+        .cake-3 .product-image { background-image: url(nghe-thuat-lam-banh-macaron.jpg); }
+        .cake-4 .product-image { background-image: url(slide4_37d74b83b7e14fd092e0c963dcc01139_master.jpg); }
+        .cake-5 .product-image { background-image: url(banh-red-velvet-ha-noi-thumb_1680022100.jpg); }
+        .cake-6 .product-image { background-image: url(banh-chuoi-nuong-sua-dua-ca-phe.jpg); }
+        .product-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.8em;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .product-card .description {
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            color: #555;
+            min-height: 40px; 
+        }
+        
+        .details-list {
+            list-style: none;
+            text-align: left;
+            padding: 10px 0 15px 0;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+        }
+        
+        .details-list li {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .details-list li strong {
+            color: var(--text-color);
+        }
+
+        .price-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .price {
+            font-weight: 700;
+            font-size: 1.4em;
+            color: var(--accent-color);
+        }
+        
+        .order-button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 8px 18px;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 25px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        
+        .order-button:hover {
+            background-color: var(--accent-color);
+            color: var(--light-text-color);
+        }
+
+        /* --- Footer và About Section --- */
+
+        .about-section {
+            padding: 80px 20px;
+            background-color: #fff;
+        }
+        
+        footer {
+            background-color: var(--text-color);
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 30px 0;
+            font-size: 0.9em;
+        }
+        
+        /* --- Form Đặt hàng Đơn giản (Contact/Order) --- */
+        #contact {
+            padding: 60px 20px;
+            background-color: var(--primary-color);
+        }
+        
+        .order-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        
+        .order-form-container h2 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .form-group input[type="text"], 
+        .form-group input[type="email"], 
+        .form-group input[type="tel"], 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: var(--font-body);
+            font-size: 1em;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: var(--light-text-color);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-button:hover {
+            background-color: #9c3b62;
+        }
+
+        /* --- Responsive (Tùy chọn) --- */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 20px;
+            }
+            .nav-links {
+                margin-top: 15px;
+            }
+            .nav-links li {
+                margin: 0 15px;
+            }
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .product-card {
+                width: 90%;
+                max-width: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header" id="home">
+        <nav class="navbar">
+            <div class="logo">Tiệm Bánh Ngọt</div>
+            <ul class="nav-links">
+                <li><a href="#home">Trang Chủ</a></li>
+                <li><a href="#menu">Thực Đơn</a></li>
+                <li><a href="#about">Về Chúng Tôi</a></li>
+                <li><a href="#contact">Đặt Hàng</a></li>
+            </ul>
+        </nav>
+        <div class="hero">
+            <h1>Nơi Hội Tụ Của Hương Vị Tuyệt Vời</h1>
+            <p>Bánh tươi, nướng mỗi ngày với nguyên liệu cao cấp nhất.</p>
+            <a href="#menu" class="cta-button">Xem Thực Đơn</a>
+        </div>
+    </header>
+
+    <section id="menu" class="product-section">
+        <h2>✨ Thực Đơn Đặc Biệt ✨</h2>
+        <div class="product-grid">
+            
+            <div class="product-card cake-1">
+                <div class="product-image"></div>
+                <h3>Bánh Socola Tiramisu</h3>
+                <p class="description">Hương vị Ý cổ điển, lớp kem mềm mịn, đắng nhẹ từ Socola nguyên chất.</p>
+                <ul class="details-list">
+                    <li><strong>Kích cỡ:</strong> 15cm (4-6 người)</li>
+                    <li><strong>Nguyên liệu chính:</strong> Cà phê Espresso, Mascarpone, Socola</li>
+                </ul>
+                <div class="price-group">
+                    <span class="price">150.000 VNĐ</span>
+                    <a href="#contact" class="order-button">Đặt Hàng</a>
+                </div>
+            </div>
+
+            <div class="product-card cake-2">
+                <div class="product-image"></div>
+                <h3>Bánh Kem Dâu Tây</h3>
+                <p class="description">Dâu tươi mọng nước và kem sữa tươi nhẹ nhàng, lý tưởng cho tiệc sinh nhật.</p>
+                <ul class="details-list">
+                    <li><strong>Kích cỡ:</strong> 20cm (8-10 người)</li>
+                    <li><strong>Nguyên liệu chính:</strong> Dâu tươi, Kem Sữa Tươi (Whipped Cream), Bánh bông lan</li>
+                </ul>
+                <div class="price-group">
+                    <span class="price">250.000 VNĐ</span>
+                    <a href="#contact" class="order-button">Đặt Hàng</a>
+                </div>
+            </div>
+
+            <div class="product-card cake-3">
+                <div class="product-image"></div>
+                <h3>Macaron Cầu Vồng</h3>
+                <p class="description">Bộ sưu tập Macaron nhiều màu sắc, vỏ giòn tan với nhân kem bơ Pháp.</p>
+                <ul class="details-list">
+                    <li><strong>Số lượng:</strong> Hộp 12 cái</li>
+                    <li><strong>Hương vị:</strong> Vani, Chanh Leo, Trà Xanh, Phúc Bồn Tử</li>
+                </ul>
+                <div class="price-group">
+                    <span class="price">30.000 VNĐ/cái</span>
+                    <a href="#contact" class="order-button">Đặt Hàng</a>
+                </div>
+            </div>
+
+            <div class="product-card cake-4">
+                <div class="product-image"></div>
+                <h3>Bánh Phô Mai Chanh Dây</h3>
+                <p class="description">Vị chua ngọt cân bằng, đế bánh quy giòn tan, không cần nướng (No-Bake).</p>
+                <ul class="details-list">
+                    <li><strong>Kích cỡ:</strong> 18cm</li>
+                    <li><strong>Nguyên liệu chính:</strong> Cream Cheese, Chanh Dây tươi, Bánh quy bơ</li>
+                </ul>
+                <div class="price-group">
+                    <span class="price">180.000 VNĐ</span>
+                    <a href="#contact" class="order-button">Đặt Hàng</a>
+                </div>
+            </div>
+
+            <div class="product-card cake-5">
+                <div class="product-image"></div>
+                <h3>Bánh Red Velvet</h3>
+                <p class="description">Màu đỏ nhung quyến rũ kết hợp với lớp kem phô mai (Cream Cheese Frosting) truyền thống.</p>
+                <ul class="details-list">
+                    <li><strong>Kích cỡ:</strong> 15cm</li>
+                    <li><strong>Nguyên liệu chính:</strong> Bột cacao, Sữa chua, Cream Cheese</li>
+                </ul>
+                <div class="price-group">
+                    <span class="price">165.000 VNĐ</span>
+                    <a href="#contact" class="order-button">Đặt Hàng</a>
+                </div>
+            </div>
+
+            <div class="product-card cake-6">
+                <div class="product-image"></div>
+                <h3>Bánh Chuối Nướng</h3>
+                <p class="description">Bánh nướng đậm đặc, vị ngọt tự nhiên của chuối, thêm hạnh nhân giòn.</p>
+                <ul class="details-list">
+                    <li><strong>Kích cỡ:</strong> Ổ lớn (Loaf)</li>
+                    <li><strong>Nguyên liệu chính:</strong> Chuối, Bột mì nguyên cám, Hạnh nhân</li>
+                </ul>
+                <div class="price-group">
+                    <span class="price">90.000 VNĐ</span>
+                    <a href="#contact" class="order-button">Đặt Hàng</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+    <section id="about" class="about-section">
+        <h2>💖 Về Chúng Tôi 💖</h2>
+        <p style="max-width: 800px; margin: 0 auto; font-size: 1.1em; color: #555;">
+            Tiệm Bánh Ngọt ra đời từ niềm đam mê tạo ra những chiếc bánh không chỉ đẹp mắt mà còn thơm ngon tuyệt hảo. Chúng tôi cam kết sử dụng nguyên liệu tươi, sạch và cao cấp nhất. Mỗi chiếc bánh là một tác phẩm nghệ thuật được làm bằng cả trái tim.
+        </p>
+    </section>
+
+    <section id="contact">
+        <div class="order-form-container">
+            <h2>📝 Đặt Hàng Ngay</h2>
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="cake-select">Chọn Loại Bánh:</label>
+                    <select id="cake-select" name="cake-type" required>
+                        <option value="">-- Chọn một loại bánh --</option>
+                        <option value="tiramisu">Bánh Socola Tiramisu</option>
+                        <option value="strawberry">Bánh Kem Dâu Tây</option>
+                        <option value="macaron">Macaron Cầu Vồng (Hộp 12)</option>
+                        <option value="cheesecake">Bánh Phô Mai Chanh Dây</option>
+                        <option value="red-velvet">Bánh Red Velvet</option>
+                        <option value="banana">Bánh Chuối Nướng</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">Tên của bạn:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Địa chỉ giao hàng:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="note">Ghi chú (Lời nhắn, thời gian nhận):</label>
+                    <textarea id="note" name="note" rows="3"></textarea>
+                </div>
+                <button type="submit" class="submit-button">HOÀN TẤT ĐẶT HÀNG</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Tiệm Bánh Ngọt. Mọi quyền được bảo lưu.</p>
+        <p>Địa chỉ: 123 Đường Bánh Kem, Quận 1, TP.HCM | Điện thoại: (028) 123 4567 | Email: info@tiembanhngot.vn</p>
+    </footer>
+</body>
+</html>
